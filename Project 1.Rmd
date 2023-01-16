@@ -1,0 +1,108 @@
+---
+title: "Project 1"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+pacman::p_load(caret, data.table, ggplot2, nnet)
+theme_set(theme_classic())
+```
+
+
+\  
+__Import Data__   
+```{r cars}
+Hep_df <- fread("HepatitisCdata.csv")
+Hep_df
+
+```
+
+```{r}
+#Hep_df <- na.omit(Hep_df)
+```
+
+
+\  
+__Convert the response variable from integer to factor__  
+
+```{r}
+Hep_df[, Categories := as.factor(Hep_df$Category)] # convert the response variable to factor
+
+str(Hep_df)
+
+```
+
+\  
+__Create Data Partition__   
+
+```{r}
+set.seed(13)
+train.index <- createDataPartition(Hep_df$Categories, p = 0.8, list = FALSE)
+Hep_df.train <- Hep_df[train.index, ]
+Hep_df.test <- Hep_df[-train.index, ]
+```
+
+
+\  
+__Relevel the response variable__  
+
+```{r}
+table(Hep_df.train$Categories)
+
+  # Create a new variable, which makes "NSPF = 1" to be the reference group
+  # 1: Normal, 2: Suspect, and 3: Pathologic 
+Hep_df.train$resp <-relevel(Hep_df.train$Categories, ref="0=Blood Donor")
+```
+
+\  
+__Run multinomial logistic regression using `multinom`__  
+
+```{r}
+Hep_df.mnl<-multinom(resp~Age+ALB+CHOL+PROT+ALP+ALT, data=Hep_df.train)
+
+summary(Hep_df.mnl)
+```
+
+
+\  
+__Generate p-values based on two-tailed z test__
+
+```{r}
+# Two-sided normal test
+z <- summary(Hep_df.mnl)$coefficients/summary(Hep_df.mnl)$standard.errors
+p <- (1 - pnorm(abs(z), 0, 1)) * 2
+p
+```
+
+
+
+```{r}
+#Odds Ratio
+exp(coef(Hep_df.mnl))
+```
+
+
+\  
+__Generate predicted probabilities__
+
+```{r}
+new1<- fitted(Hep_df.mnl)
+head(new1)
+
+new2<- predict(Hep_df.mnl, Hep_df.train, type = "prob")
+head(new2)
+```
+
+
+\  
+__Evaluate model performance__    
+
+```{r}
+pred1 <- predict(Hep_df.mnl, Hep_df.test)
+prob <- predict(Hep_df.mnl, Hep_df.test, type="prob") #predicted probabilities
+
+confusionMat <- table(pred1, Hep_df.test$Categories)
+
+confusionMatrix(confusionMat)
+```
+
