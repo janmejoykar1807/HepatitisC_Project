@@ -4,10 +4,10 @@ Hepatitis C Prediction
 I framed 4 questions from a real-time dataset to apply our modules understanding.
 Questions based on the dataset:
 
-	What is the probability of ALB being more than 30mg/l? (Module 1)
-	The mean of ALP is more than the mean of protein. (α=.075) (Module 2)
-	The mean of CHOL is more than the mean of ALT. (α=.05) (Module 2)
-	Find that our test statistics are true for the hypothesis of CHOL and ALP. (Module 3)
+	What is the probability of ALB being more than 30mg/l?
+	The mean of ALP is more than the mean of protein. (α=.075)
+	The mean of CHOL is more than the mean of ALT. (α=.05)
+	Find that our test statistics are true for the hypothesis of CHOL and ALP.
 	Run the logistics regression analysis for the dataset. And get the Confidence interval.
 
 Answer 1: - From the python package attached to the file, we have concluded that there are a total of 24 blood donors who have Albumin content lower than 30mg/l out of 615 donors, which brings down our probability z = (x-μ)/σ. 
