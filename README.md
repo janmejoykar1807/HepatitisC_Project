@@ -1,53 +1,138 @@
-# HepatitisC_Project
-Hepatitis C Prediction
+# 🩺 Hepatitis C Prediction — Statistical Inference & Logistic Regression
 
-I framed 4 questions from a real-time dataset to apply our modules understanding.
-Questions based on the dataset:
+> **Can biomarkers in blood donor data predict Hepatitis C risk?**
+> This project applies hypothesis testing, statistical inference, and logistic regression to answer exactly that — using a real clinical dataset of 615 blood donors.
 
-	What is the probability of ALB being more than 30mg/l?
-	The mean of ALP is more than the mean of protein. (α=.075)
-	The mean of CHOL is more than the mean of ALT. (α=.05)
-	Find that our test statistics are true for the hypothesis of CHOL and ALP.
-	Run the logistics regression analysis for the dataset. And get the Confidence interval.
+---
 
-Answer 1: - From the python package attached to the file, we have concluded that there are a total of 24 blood donors who have Albumin content lower than 30mg/l out of 615 donors, which brings down our probability z = (x-μ)/σ. 
+## 📌 Project Overview
 
-Z = (30 – 41.62)/ 14.9 = -0.78
-P(z>30) = 1 – p(z<30) = 1 - 0.2177 = 0.7823
-Here, our probability value indicates that there is a high percentage of blood donors who have high albumin levels which can be harmful to the body as well as the liver.
+Hepatitis C is a liver disease caused by the Hepatitis C virus (HCV), and early detection through blood biomarker analysis is critical for timely treatment. This project frames **five analytical questions** around a real-world clinical dataset and answers each one using rigorous statistical methods — implemented in both **Python** and **R**.
 
-Answer 2: - From the module, we have learned to calculate the difference between two population means.
+The analysis covers probability estimation, two-sample hypothesis testing, z-tests, and logistic regression with confidence intervals — demonstrating an end-to-end statistical modeling workflow.
 
-H0 = Mean of Alkaline Phosphatase is more than the Mean of Protein
-Hα = Mean of Protein is more than the Mean of Alkaline Phosphatase.
-			H0 = µ1 ≥ µ2
-			Hα = µ1 < µ2	
-Here, 
- 
-X1 = 68.28		σ 1 = 26.03		n1 = 597
-X2 = 72.04		σ 2 = 5.4	   	n2 = 615
-Z = (x_1-x_2)/(√((σ_1^2)/n_1 +)  σ^2/n_2 )  = (-3.76)/ (1.087) = -3.459
+---
 
-As our critical value (α) was 0.075 which has a value of 1.440, which means our Null hypothesis has been rejected as our test statistics value is more than the critical value,
-Z < -1.440
-From this, we can note that our data has more healthy blood donors than a patient who has hepatitis. And donors have a healthy liver. If ALP were more, donors would lose weight rapidly because ALP is responsible for the breakdown of protein in our bodies. 
+## 📂 Repository Structure
 
-Answer 3: - From the module, we have learned to calculate the difference between two population means.
+```
+HepatitisC_Project/
+│
+├── HepatitisCdata.csv          # Clinical dataset (615 blood donor records)
+├── ProjectPY.ipynb             # Python analysis: probability, hypothesis tests, logistic regression
+├── Project 1.Rmd               # R analysis: logistic regression + confidence intervals
+├── Final Project.docx          # Written report with full findings and interpretation
+└── README.md
+```
 
-H0 = Mean of Cholesterol is more than the Mean of Alanine Transaminase
-Hα = Mean of Alanine Transaminase is more than the Mean of Cholesterol.
-			H0 = µ1 ≥ µ2
-			Hα = µ1 < µ2	
-Here, 
- 
-X1 = 5.37		σ 1 = 1.13		n1 = 605
-X2 = 28.45		σ 2 = 25.47		n2 = 614
-Z = (x_1-x_2)/(√((σ_1^2)/n_1 +)  σ^2/n_2 )  = (-23.08)/ (1.029) = -22.43
+---
 
-As our critical value (α) was 0.075 which has a value of 1.645, which means our Null hypothesis has been rejected as our test statistics value is more than the critical value,
-Z < -1.645
-From this, we can note that our data has more healthy blood donors than a patient who has hepatitis. If Cholesterol would have more then there is a high risk of liver and heart failure in near future for the donors.
+## 🔬 Dataset
 
-Answer 4: - From the above answers of the test statistics, we can conclude that our hypothesis for the CHOL and ALP has been rejected as the value is outside the boundary of the Not reject region. So, this indicates that our data consist of more healthy donors than that who are suffering from serious diseases.
+| Feature | Description |
+|--------|-------------|
+| **ALB** | Albumin (g/L) — liver protein marker |
+| **ALP** | Alkaline Phosphatase — enzyme linked to liver/bone disease |
+| **ALT** | Alanine Transaminase — liver enzyme, elevated in liver damage |
+| **CHOL** | Cholesterol level |
+| **Protein** | Total blood protein |
+| **Category** | Blood donor vs. Hepatitis C patient |
 
-Answer 5: - Refer to the R package for the CI and prediction of the data.
+- **Records:** 615 blood donors
+- **Source:** Real-world clinical data
+
+---
+
+## ❓ Research Questions & Findings
+
+### Q1 — Probability Estimation
+**What is the probability that a donor has Albumin (ALB) > 30 mg/L?**
+
+Using z-score normalization:
+
+```
+Z = (30 – 41.62) / 14.9 = –0.78
+P(ALB > 30) = 1 – P(Z < –0.78) = 1 – 0.2177 = 0.7823
+```
+
+**Finding:** ~78.2% of donors have albumin above 30 mg/L — indicating a predominantly healthy donor pool. Only 24 out of 615 donors fell below the threshold.
+
+---
+
+### Q2 — Two-Sample Hypothesis Test (ALP vs. Protein)
+**H₀:** Mean ALP ≥ Mean Protein
+**Hₐ:** Mean Protein > Mean ALP  *(α = 0.075)*
+
+```
+Z = (68.28 – 72.04) / √(26.03²/597 + 5.4²/615) = –3.459
+Critical value at α = 0.075: –1.440
+```
+
+**Result:** Reject H₀. Protein mean significantly exceeds ALP, indicating healthy liver function in the donor population.
+
+---
+
+### Q3 — Two-Sample Hypothesis Test (CHOL vs. ALT)
+**H₀:** Mean CHOL ≥ Mean ALT
+**Hₐ:** Mean ALT > Mean CHOL  *(α = 0.05)*
+
+```
+Z = (5.37 – 28.45) / √(1.13²/605 + 25.47²/614) = –22.43
+Critical value at α = 0.05: –1.645
+```
+
+**Result:** Reject H₀. Elevated ALT relative to CHOL indicates liver enzyme activity consistent with early disease risk in a subset of donors.
+
+---
+
+### Q4 — Hypothesis Synthesis
+Combined interpretation of Q2 & Q3 confirms that the majority of the dataset consists of **healthy blood donors**, with biomarker levels outside the disease-risk zone for most individuals.
+
+---
+
+### Q5 — Logistic Regression & Confidence Intervals
+Full logistic regression model implemented in **R** (`Project 1.Rmd`) predicting Hepatitis C disease status from biomarker features, including:
+- Model coefficients and odds ratios
+- Confidence intervals for each predictor
+- Model evaluation metrics
+
+---
+
+## 🛠️ Tech Stack
+
+| Tool | Usage |
+|------|-------|
+| **Python** (Pandas, NumPy, SciPy, Scikit-Learn) | Probability estimation, hypothesis testing, logistic regression |
+| **R** (glm, stats) | Logistic regression, confidence intervals |
+| **Jupyter Notebook** | Python interactive analysis |
+| **R Markdown** | R reproducible report |
+
+---
+
+## 💡 Key Skills Demonstrated
+
+- ✅ Probability estimation using z-score normalization
+- ✅ One-sample and two-sample z-tests
+- ✅ Null hypothesis significance testing (NHST) with custom α levels
+- ✅ Logistic regression with confidence interval interpretation
+- ✅ Bilingual statistical analysis: Python **and** R
+- ✅ Clinical data interpretation and storytelling
+
+---
+
+## 🚀 How to Run
+
+**Python:**
+```bash
+pip install pandas numpy scipy scikit-learn matplotlib jupyter
+jupyter notebook ProjectPY.ipynb
+```
+
+**R:**
+Open `Project 1.Rmd` in RStudio and click **Knit** to generate the full report.
+
+---
+
+## 📬 Author
+
+**Janmejoy Kar** — Data Scientist | [LinkedIn](https://www.linkedin.com/in/janmejoy-kar-849756196/) | [GitHub](https://github.com/janmejoykar1807)
